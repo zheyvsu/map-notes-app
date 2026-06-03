@@ -1,0 +1,70 @@
+<div class="app-container" (click)="onBackgroundClick()">
+  <!-- 顶部工具栏 -->
+  <header class="app-header">
+    <h1 class="app-title">{{ title }}</h1>
+    <div class="header-actions">
+      <button
+        class="action-btn primary"
+        (click)="onAddNote()"
+        title="新增便签"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>新增便签</span>
+      </button>
+      <button
+        class="action-btn"
+        (click)="onUndo()"
+        [disabled]="!canUndo"
+        title="撤销 (Ctrl+Z)"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 7v6h6"></path>
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+        </svg>
+      </button>
+      <button
+        class="action-btn"
+        (click)="onRedo()"
+        [disabled]="!canRedo"
+        title="重做 (Ctrl+Y)"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 7v6h-6"></path>
+          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 3.7"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 地图容器 -->
+  <div class="map-wrapper">
+    <!-- 地图查看器 -->
+    <app-map-viewer></app-map-viewer>
+
+    <!-- 便签层 -->
+    <div class="notes-layer">
+      <app-sticky-note
+        *ngFor="let note of notes"
+        [note]="note"
+        [isSelected]="selectedNoteId === note.id"
+        (edit)="onEditNote($event)"
+        (delete)="onDeleteNote($event)"
+        (colorChange)="onColorChange($event)"
+        (positionChange)="onNotePositionChange($event)"
+        (dragStart)="onSelectNote($event)"
+        (select)="onSelectNote($event)"
+      ></app-sticky-note>
+    </div>
+  </div>
+
+  <!-- 编辑器对话框 -->
+  <app-note-editor
+    *ngIf="editingNote && editingNoteId"
+    [note]="editingNote"
+    (save)="onSaveNote($event)"
+    (cancel)="onCancelEdit()"
+  ></app-note-editor>
+</div>

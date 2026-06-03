@@ -1,0 +1,24 @@
+/* Quill 富文本编辑器样式 */
+@import 'quill/dist/quill.snow.css';
+
+/* 全局样式 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 禁用文本选择（除了编辑器） */
+body {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 编辑器区域允许选择 */
+.ql-editor,
+.note-content {
+  user-select: text;
+  -webkit-user-select: text;
+}

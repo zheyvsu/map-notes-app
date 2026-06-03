@@ -1,0 +1,43 @@
+<div class="editor-overlay" (click)="onCancel()">
+  <div class="editor-dialog" (click)="$event.stopPropagation()">
+    <!-- 标题栏 -->
+    <div class="editor-header">
+      <input
+        #titleInput
+        type="text"
+        class="title-input"
+        [value]="editedTitle"
+        (input)="editedTitle = $event.target.value"
+        (keypress)="onKeyPress($event)"
+        placeholder="便签标题"
+        maxlength="50"
+      />
+      <span class="title-hint">Enter 保存 • Esc 取消</span>
+    </div>
+
+    <!-- 颜色选择器 -->
+    <div class="color-selector">
+      <span class="color-label">颜色：</span>
+      <div class="color-options">
+        <div
+          *ngFor="let color of noteColors"
+          class="color-option"
+          [class.active]="color === selectedColor"
+          [style.background-color]="color"
+          (click)="onColorChange(color)"
+        ></div>
+      </div>
+    </div>
+
+    <!-- 编辑器容器 -->
+    <div class="editor-body">
+      <div #editorContainer class="quill-editor"></div>
+    </div>
+
+    <!-- 按钮栏 -->
+    <div class="editor-footer">
+      <button class="btn btn-cancel" (click)="onCancel()">取消</button>
+      <button class="btn btn-save" (click)="onSave()">保存</button>
+    </div>
+  </div>
+</div>

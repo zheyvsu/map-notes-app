@@ -1,0 +1,61 @@
+<div
+  class="sticky-note"
+  [class.selected]="isSelected"
+  [style.left.px]="note.x"
+  [style.top.px]="note.y"
+  [style.width.px]="note.width"
+  [style.height.px]="note.height"
+  [style.background-color]="note.backgroundColor"
+  [style.zIndex]="note.zIndex"
+  cdkDrag
+  [cdkDragBoundary]="'.map-wrapper'"
+  (cdkDragEnded)="onDragEnd($event)"
+  (cdkDragStarted)="onDragStart()"
+  (dblclick)="onDoubleClick()"
+  (contextmenu)="onContextMenu($event)"
+  (click)="onSelect()"
+>
+  <!-- 拖拽手柄 -->
+  <div class="note-header" cdkDragHandle>
+    <span class="note-title">{{ note.title }}</span>
+    <span class="note-date">{{ note.updatedAt | date:'shortDate' }}</span>
+  </div>
+
+  <!-- 便签内容 -->
+  <div class="note-content" [innerHTML]="note.content ? getSafeContent() : getContentPreview()"></div>
+
+  <!-- 右键菜单 -->
+  <div
+    *ngIf="showContextMenu"
+    class="context-menu"
+    [style.left.px]="contextMenuPosition.x"
+    [style.top.px]="contextMenuPosition.y"
+  >
+    <div class="context-menu-item" (click)="onDoubleClick()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+      编辑
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-header">颜色</div>
+    <div class="color-palette">
+      <div
+        *ngFor="let color of noteColors"
+        class="color-option"
+        [style.background-color]="color"
+        [class.active]="color === note.backgroundColor"
+        (click)="onColorChange(color)"
+      ></div>
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item danger" (click)="onDelete()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+      </svg>
+      删除
+    </div>
+  </div>
+</div>
